@@ -48,7 +48,7 @@ namespace KitchenRP.Web
                     Version = "v1",
                 });
             });
-            
+
             services.AddSingleton(provider =>
                 new JwtService(Configuration["Jwt:Secret"], int.Parse(Configuration["Jwt:TimeoutDuration"])));
 

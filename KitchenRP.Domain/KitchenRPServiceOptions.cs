@@ -11,11 +11,12 @@ namespace KitchenRP.Domain
         }
 
         private Func<IServiceProvider, IAuthenticationService> _authService;
-        
+
         internal Func<IServiceProvider, IAuthenticationService> AuthService =>
             _authService ?? throw new ServiceNotInitializedException();
-        
     }
 
-    public class ServiceNotInitializedException : Exception { }
+    public class ServiceNotInitializedException : Exception
+    {
+    }
 }

@@ -4,7 +4,6 @@ namespace KitchenRP.Web
 {
     public static class Errors
     {
-
         public static ActionResult NotYetRegisteredError()
         {
             return new ObjectResult(new ProblemDetails
@@ -16,7 +15,7 @@ namespace KitchenRP.Web
                 Status = 403
             });
         }
-        
+
         public static ActionResult InvalidCredentials()
         {
             return new ObjectResult(new ProblemDetails
@@ -27,7 +26,5 @@ namespace KitchenRP.Web
                 Status = 403
             });
         }
-        
-        
     }
 }

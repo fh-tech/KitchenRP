@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace KitchenRP.Web.Controllers
 {
     [ApiController]
-    public class ErrorController: ControllerBase
+    public class ErrorController : ControllerBase
     {
         [Route("/error")]
         public IActionResult Error() => Problem();
-        
+
         [Route("/error-local-development")]
         public IActionResult ErrorLocalDevelopment([FromServices] IWebHostEnvironment webHostEnvironment)
         {

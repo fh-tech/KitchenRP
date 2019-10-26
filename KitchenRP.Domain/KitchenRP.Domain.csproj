@@ -10,11 +10,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Novell.Directory.Ldap.NETStandard2_0" Version="3.1.0" />
+        <PackageReference Include="Novell.Directory.Ldap.NETStandard2_0" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KitchenRP.DataAccess\KitchenRP.DataAccess.csproj" />
+        <ProjectReference Include="..\KitchenRP.DataAccess\KitchenRP.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>

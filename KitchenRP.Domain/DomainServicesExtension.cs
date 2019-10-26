@@ -6,7 +6,8 @@ namespace KitchenRP.Domain
 {
     public static class DomainServicesExtension
     {
-        public static IServiceCollection AddKitchenRpDomainServices(this IServiceCollection services, Action<KitchenRpServiceOptions> configurer)
+        public static IServiceCollection AddKitchenRpDomainServices(this IServiceCollection services,
+            Action<KitchenRpServiceOptions> configurer)
         {
             var options = new KitchenRpServiceOptions();
             configurer.Invoke(options);

@@ -20,14 +20,14 @@ namespace KitchenRP.DataAccess
             var user = await _ctx.Users.Where(u => u.Sub == uid)
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync();
-            
-            return user != null ?
-                new[]
+
+            return user != null
+                ? new[]
                 {
                     new Claim("sub", user.Sub),
                     new Claim("scope", user.Role.Role),
-                } 
-                : new Claim[]{};
+                }
+                : new Claim[] { };
         }
     }
 }

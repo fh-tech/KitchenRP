@@ -5,9 +5,8 @@ using Novell.Directory.Ldap;
 
 namespace KitchenRP.Domain.Services
 {
-    public class LdapAuthService: IAuthenticationService
+    public class LdapAuthService : IAuthenticationService
     {
-        
         /// <summary>
         /// Initializes a AuthService for authentication against a LDAP server
         /// Note this service uses tls for connecting to the server
@@ -26,11 +25,12 @@ namespace KitchenRP.Domain.Services
             _searchBase = searchBase;
             _userSearch = userSearch;
         }
-        
+
         private readonly string _ldapHost;
         private readonly ushort _ldapPort;
         private readonly string _searchBase;
         private readonly string _userSearch;
+
         /// <summary>
         /// Authenticates <param name="username"/> against a Ldap server using <param name="password"></param>
         /// </summary>
@@ -39,7 +39,6 @@ namespace KitchenRP.Domain.Services
         /// <returns>true if the connection could be successfully bound, false otherwise</returns>
         public bool AuthenticateUser(string username, string password)
         {
-            
             using var connection = new LdapConnection();
             try
             {
@@ -51,6 +50,7 @@ namespace KitchenRP.Domain.Services
             {
                 return false;
             }
+
             connection.StopTls();
             return true;
         }
