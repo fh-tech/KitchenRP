@@ -1,17 +1,15 @@
-using System;
-using System.Linq;
-using System.Net;
+using System.Text;
 using KitchenRP.DataAccess;
 using KitchenRP.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace KitchenRP.Web
 {
@@ -49,9 +47,6 @@ namespace KitchenRP.Web
                 });
             });
 
-            services.AddSingleton(provider =>
-                new JwtService(Configuration["Jwt:Secret"], int.Parse(Configuration["Jwt:TimeoutDuration"])));
-
             services.AddKitchenRpDomainServices(c =>
             {
                 c.LdapConfiguration(
@@ -61,6 +56,30 @@ namespace KitchenRP.Web
                     Configuration["Ldap:UserSearch"]
                 );
             });
+            
+            
+            var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Secret"]);
+            
+            services.AddSingleton(provider =>
+                new JwtService(key, int.Parse(Configuration["Jwt:TimeoutDuration"])));
+            
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +98,8 @@ namespace KitchenRP.Web
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

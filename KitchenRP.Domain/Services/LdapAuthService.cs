@@ -48,10 +48,13 @@ namespace KitchenRP.Domain.Services
             }
             catch (LdapException e)
             {
+                Console.WriteLine(e);
                 return false;
             }
-
-            connection.StopTls();
+            finally
+            {
+                connection.StopTls();
+            }
             return true;
         }
     }

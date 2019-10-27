@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using KitchenRP.Domain;
 using KitchenRP.Domain.Services;
 using KitchenRP.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IAuthorizationService = KitchenRP.Domain.Services.IAuthorizationService;
 
 namespace KitchenRP.Web.Controllers
 {
@@ -30,13 +30,13 @@ namespace KitchenRP.Web.Controllers
         {
             if (!_authenticationService.AuthenticateUser(model!.Username, model!.Password))
             {
-                return Errors.NotYetRegisteredError();
+                return this.Error(Errors.NotYetRegisteredError());
             }
 
             var claims = (await _authorizationService.Authorize(model!.Username)).ToList();
             if (!claims.Any())
             {
-                return Errors.InvalidCredentials();
+                return this.Error(Errors.InvalidCredentials());
             }
 
             var token = _tokenService.GenerateToken(claims);
@@ -45,6 +45,13 @@ namespace KitchenRP.Web.Controllers
                 Token = token,
                 Iat = DateTime.UtcNow
             });
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("tokenTest")]
+        public IActionResult Test()
+        {
+            return Ok("OK");
         }
     }
 }

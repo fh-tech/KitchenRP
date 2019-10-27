@@ -10,13 +10,13 @@ namespace KitchenRP.Web
 {
     public class JwtService
     {
-        public JwtService(string secret, int timeoutDuration)
+        public JwtService(byte[] secret, int timeoutDuration)
         {
             _secret = secret;
             _timeoutDuration = timeoutDuration;
         }
 
-        private readonly string _secret;
+        private readonly byte[] _secret;
         private readonly int _timeoutDuration;
 
         public string GenerateToken(IEnumerable<Claim> claims)
@@ -24,8 +24,6 @@ namespace KitchenRP.Web
             var claimList = claims.ToList();
             var tokenHandler = new JwtSecurityTokenHandler();
             var claimDict = claimList.ToDictionary(c => c.Type, v => (object) v.Value);
-            var key = Encoding.ASCII.GetBytes(_secret);
-
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -33,7 +31,7 @@ namespace KitchenRP.Web
                 Claims = claimDict,
                 Expires = DateTime.UtcNow.AddMinutes(_timeoutDuration),
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
+                    new SymmetricSecurityKey(_secret),
                     SecurityAlgorithms.HmacSha512Signature
                 )
             };

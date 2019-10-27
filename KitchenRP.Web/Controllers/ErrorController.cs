@@ -8,9 +8,11 @@ namespace KitchenRP.Web.Controllers
     [ApiController]
     public class ErrorController : ControllerBase
     {
+        [HttpGet]
         [Route("/error")]
         public IActionResult Error() => Problem();
 
+        [HttpGet]
         [Route("/error-local-development")]
         public IActionResult ErrorLocalDevelopment([FromServices] IWebHostEnvironment webHostEnvironment)
         {
