@@ -12,6 +12,7 @@ namespace KitchenRP.Domain
             var options = new KitchenRpServiceOptions();
             configurer.Invoke(options);
             services.AddScoped(options.AuthService);
+            services.AddScoped(options.JwtService);
             services.AddScoped<IAuthorizationService, KitchenRpAuthorizationService>();
             return services;
         }

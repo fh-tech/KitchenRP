@@ -26,5 +26,16 @@ namespace KitchenRP.Web
                 Status = 403
             };
         }
+        
+        public static ProblemDetails BadRefreshToken()
+        {
+            return new ProblemDetails
+            {
+                Type = "BadRefreshToken",
+                Title = "Bad refresh token",
+                Detail = "Provided refresh token could not be verified, this could be because the token expired, or because it was revoked",
+                Status = 400
+            };
+        }
     }
 }

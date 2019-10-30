@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using KitchenRP.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace KitchenRP.DataAccess
 {
@@ -29,5 +31,16 @@ namespace KitchenRP.DataAccess
                 }
                 : new Claim[] { };
         }
+
+        public async Task<RefreshToken> AddNewRefreshToken(string tokenKey, Instant expires, string sub)
+        {
+            _ctx.RefreshTokens.RemoveRange(_ctx.RefreshTokens.Where(t => t.Sub == sub));
+            var entry = _ctx.RefreshTokens.Add(new RefreshToken {Expires = expires, Key = tokenKey, Sub = sub});
+            await _ctx.SaveChangesAsync();
+            return entry.Entity;
+        }
+        
+        public aysnc Task 
+        
     }
 }

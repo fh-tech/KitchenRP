@@ -15,6 +15,7 @@ namespace KitchenRP.DataAccess
         internal DbSet<StatusChange> StatusChanges { get; set; }
         internal DbSet<User> Users { get; set; }
         internal DbSet<UserRole> UserRoles { get; set; }
+        internal DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         public KitchenRpContext(DbContextOptions options) : base(options)

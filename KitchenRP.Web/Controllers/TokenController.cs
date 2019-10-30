@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using KitchenRP.Domain.Services;
 using KitchenRP.Web.Models;
@@ -13,7 +14,9 @@ namespace KitchenRP.Web.Controllers
     [Route("token")]
     public class AuthController : ControllerBase
     {
-        public AuthController(IAuthenticationService authenticationService, IAuthorizationService authorizationService,
+        public AuthController(
+            IAuthenticationService authenticationService,
+            IAuthorizationService authorizationService,
             JwtService tokenService)
         {
             _authorizationService = authorizationService;
@@ -25,7 +28,30 @@ namespace KitchenRP.Web.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly JwtService _tokenService;
 
-        [HttpPost]
+        [HttpPost("refresh"), AllowAnonymous]
+        public async Task<IActionResult> RefreshAuth(RefreshAccessRequest model)
+        {
+            var token = _tokenService.VerifyRefreshToken(model.RefreshToken);
+            if (token == null)
+            {
+                return this.Error(Errors.BadRefreshToken());
+            }
+
+            var sub = token.Subject;
+            var claims = (await _authorizationService.Authorize(sub)).ToList();
+
+            var newAccessToken = _tokenService.GenerateAccessToken(claims);
+            var newRefreshToken = await _tokenService.GenerateRefreshToken(sub);
+            
+            return Ok(new NewTokenResponse
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken,
+                Iat = DateTime.Now,
+            });
+        }
+        
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Authenticate(AuthRequest model)
         {
             if (!_authenticationService.AuthenticateUser(model!.Username, model!.Password))
@@ -34,24 +60,26 @@ namespace KitchenRP.Web.Controllers
             }
 
             var claims = (await _authorizationService.Authorize(model!.Username)).ToList();
+            
             if (!claims.Any())
             {
                 return this.Error(Errors.InvalidCredentials());
             }
-
-            var token = _tokenService.GenerateToken(claims);
+            var accessToken = _tokenService.GenerateAccessToken(claims);
+            var refreshToken = await _tokenService.GenerateRefreshToken(model!.Username);
             return Ok(new NewTokenResponse
             {
-                Token = token,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
                 Iat = DateTime.UtcNow
             });
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpGet("tokenTest")]
         public IActionResult Test()
         {
-            return Ok("OK");
+            return Ok(User.Claims.Where(c => c.Type == "role"));
         }
     }
 }

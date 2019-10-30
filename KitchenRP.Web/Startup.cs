@@ -1,6 +1,7 @@
 using System.Text;
 using KitchenRP.DataAccess;
 using KitchenRP.Domain;
+using KitchenRP.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,24 +46,43 @@ namespace KitchenRP.Web
                     Title = "KitchenRP-Api",
                     Version = "v1",
                 });
+                var tokenScheme = new OpenApiSecurityScheme
+                {
+                    Description = "JWT authorization header. Example: \"Authorization: Bearer {token}\"",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    BearerFormat = "Authorization: Bearer $token",
+                };
+                
+                c.AddSecurityDefinition("Bearer", tokenScheme);
+                
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {tokenScheme, new string[]{}}
+                });
             });
 
+            var accessKey = Encoding.ASCII.GetBytes(Configuration["Jwt:AccessSecret"]);
+            var refreshKey = Encoding.ASCII.GetBytes(Configuration["Jwt:RefreshSecret"]);
+            
             services.AddKitchenRpDomainServices(c =>
             {
-                c.LdapConfiguration(
-                    Configuration["Ldap:Host"],
-                    ushort.Parse(Configuration["Ldap:Port"]),
-                    Configuration["Ldap:SearchBase"],
-                    Configuration["Ldap:UserSearch"]
-                );
+                c.LdapConfiguration(lc =>
+                {
+                    lc.Host = Configuration["Ldap:Host"];
+                    lc.Port = ushort.Parse(Configuration["Ldap:Port"]);
+                    lc.SearchBase = Configuration["Ldap:SearchBase"];
+                    lc.UserSearch = Configuration["Ldap:UserSearch"];
+                });
+                c.JwtConfiguration(jwt =>
+                {
+                    jwt.AccessSecret = accessKey;
+                    jwt.RefreshSecret = refreshKey;
+                    jwt.AccessTimeout = int.Parse(Configuration["Jwt:AccessTimeout"]);
+                    jwt.RefreshTimeout = int.Parse(Configuration["Jwt:RefreshTimeout"]);
+                });
             });
-            
-            
-            var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Secret"]);
-            
-            services.AddSingleton(provider =>
-                new JwtService(key, int.Parse(Configuration["Jwt:TimeoutDuration"])));
-            
+
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,7 +95,7 @@ namespace KitchenRP.Web
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        IssuerSigningKey = new SymmetricSecurityKey(accessKey),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
