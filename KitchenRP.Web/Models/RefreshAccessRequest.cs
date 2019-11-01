@@ -5,6 +5,6 @@ namespace KitchenRP.Web.Models
     public class RefreshAccessRequest
     {
         [Required]
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace KitchenRP.Web
                             .UseNodaTime());
                 });
 
-            services.AddScoped<KitchenRpDatabase>();
+            services.AddScoped<IKitchenRpDatabase, KitchenRpDatabase>();
 
             services.AddSwaggerGen(c =>
             {
@@ -107,7 +107,7 @@ namespace KitchenRP.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error-local-development");
             }
             else
             {

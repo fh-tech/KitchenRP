@@ -8,7 +8,7 @@ using NodaTime;
 
 namespace KitchenRP.DataAccess
 {
-    public class KitchenRpDatabase
+    public class KitchenRpDatabase: IKitchenRpDatabase
     {
         private readonly KitchenRpContext _ctx;
 
@@ -40,7 +40,10 @@ namespace KitchenRP.DataAccess
             return entry.Entity;
         }
         
-        public aysnc Task 
+        public async Task<bool> IsValidRefreshKey(string key)
+        {
+            return await _ctx.RefreshTokens.Where(r => r.Key == key).CountAsync() != 0;
+        }
         
     }
 }

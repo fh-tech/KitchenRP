@@ -11,12 +11,12 @@ using NodaTime.Extensions;
 
 namespace KitchenRP.Domain.Services
 {
-    public class JwtService
+    public class JwtService: IJwtService
     {
         public IClock Clock { get; set; }
 
         public JwtService(
-            KitchenRpDatabase db,
+            IKitchenRpDatabase db,
             byte[] accessSecret,
             int accessTimeout,
             byte[] refreshSecret,
@@ -30,13 +30,13 @@ namespace KitchenRP.Domain.Services
             Clock = SystemClock.Instance;
         }
 
-        private readonly KitchenRpDatabase _db;
+        private readonly IKitchenRpDatabase _db;
         private readonly byte[] _accessSecret;
         private readonly byte[] _refreshSecret;
         private readonly int _accessTimeout;
         private readonly int _refreshTimeout;
 
-        public JwtSecurityToken? VerifyRefreshToken(string refreshToken)
+        public async Task<JwtSecurityToken?> VerifyRefreshToken(string refreshToken)
         {
             //SignatureValidation
             var validationParameters = new TokenValidationParameters
@@ -52,7 +52,11 @@ namespace KitchenRP.Domain.Services
 
             // Signature validation failed
             if (!(validToken is JwtSecurityToken jwt)) return null;
+            var refreshKey = jwt.Claims.SingleOrDefault(c => c.Type == "refresh_key")?.Value;
             
+            return await _db.IsValidRefreshKey(refreshKey ?? "")
+                ? jwt 
+                : null;
         }
         
         public async Task<string> GenerateRefreshToken(string sub)

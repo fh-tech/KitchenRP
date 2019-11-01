@@ -4,8 +4,6 @@
         <TargetFramework>netcoreapp3.0</TargetFramework>
         <RootNamespace>KitchenRP.DataAccess</RootNamespace>
         <LangVersion>8.0</LangVersion>
-        <Nullable>enable</Nullable>
-        <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

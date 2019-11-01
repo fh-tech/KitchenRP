@@ -38,7 +38,7 @@ namespace KitchenRP.DataAccess.Models
         public string Reason { get; private set; }
         public Instant ChangedAt { get; private set; }
         public Reservation Reservation { get; private set; }
-        public User? ChangedBy { get; private set; }
+        public User ChangedBy { get; private set; }
     }
 
     internal class StatusChangedTypeConfiguration : IEntityTypeConfiguration<StatusChange>

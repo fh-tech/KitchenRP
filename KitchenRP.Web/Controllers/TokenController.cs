@@ -31,7 +31,7 @@ namespace KitchenRP.Web.Controllers
         [HttpPost("refresh"), AllowAnonymous]
         public async Task<IActionResult> RefreshAuth(RefreshAccessRequest model)
         {
-            var token = _tokenService.VerifyRefreshToken(model.RefreshToken);
+            var token = await _tokenService.VerifyRefreshToken(model.RefreshToken!);
             if (token == null)
             {
                 return this.Error(Errors.BadRefreshToken());
@@ -42,37 +42,29 @@ namespace KitchenRP.Web.Controllers
 
             var newAccessToken = _tokenService.GenerateAccessToken(claims);
             var newRefreshToken = await _tokenService.GenerateRefreshToken(sub);
-            
-            return Ok(new NewTokenResponse
-            {
-                AccessToken = newAccessToken,
-                RefreshToken = newRefreshToken,
-                Iat = DateTime.Now,
-            });
+
+            return Ok(new NewTokenResponse( newAccessToken, newRefreshToken, DateTime.Now));
         }
-        
+
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Authenticate(AuthRequest model)
         {
-            if (!_authenticationService.AuthenticateUser(model!.Username, model!.Password))
+            if (!_authenticationService.AuthenticateUser(model.Username!, model.Password!))
             {
                 return this.Error(Errors.NotYetRegisteredError());
             }
 
-            var claims = (await _authorizationService.Authorize(model!.Username)).ToList();
-            
+            var claims = (await _authorizationService.Authorize(model.Username!)).ToList();
+
             if (!claims.Any())
             {
                 return this.Error(Errors.InvalidCredentials());
             }
+
             var accessToken = _tokenService.GenerateAccessToken(claims);
-            var refreshToken = await _tokenService.GenerateRefreshToken(model!.Username);
-            return Ok(new NewTokenResponse
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                Iat = DateTime.UtcNow
-            });
+            var refreshToken = await _tokenService.GenerateRefreshToken(model.Username!);
+
+            return Ok(new NewTokenResponse(accessToken, refreshToken, DateTime.UtcNow));
         }
 
         [Authorize]

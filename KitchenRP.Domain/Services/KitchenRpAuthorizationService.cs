@@ -7,12 +7,12 @@ namespace KitchenRP.Domain.Services
 {
     public class KitchenRpAuthorizationService : IAuthorizationService
     {
-        public KitchenRpAuthorizationService(KitchenRpDatabase database)
+        public KitchenRpAuthorizationService(IKitchenRpDatabase database)
         {
             _database = database;
         }
 
-        private readonly KitchenRpDatabase _database;
+        private readonly IKitchenRpDatabase _database;
 
         public async Task<IEnumerable<Claim>> Authorize(string uid)
         {

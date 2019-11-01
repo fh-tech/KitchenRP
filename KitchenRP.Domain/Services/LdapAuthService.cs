@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection.PortableExecutable;
 using Novell.Directory.Ldap;
 
 namespace KitchenRP.Domain.Services
@@ -56,6 +54,7 @@ namespace KitchenRP.Domain.Services
                 connection.StopTls();
             }
             return true;
+#pragma warning restore 162
         }
     }
 }

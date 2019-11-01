@@ -4,8 +4,15 @@ namespace KitchenRP.Web.Models
 {
     public class NewTokenResponse
     {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime Iat { get; set; }
+        public NewTokenResponse(string accessToken, string refreshToken, DateTime iat)
+        {
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
+            Iat = iat;
+        }
+
+        public string AccessToken { get;}
+        public string RefreshToken { get;}
+        public DateTime Iat { get; }
     }
 }
