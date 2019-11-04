@@ -54,7 +54,6 @@ namespace KitchenRP.Domain.Services
                 connection.StopTls();
             }
             return true;
-#pragma warning restore 162
         }
     }
 }

@@ -10,7 +10,8 @@ namespace KitchenRP.Web.Controllers
     {
         [HttpGet]
         [Route("/error")]
-        public IActionResult Error() => Problem();
+        public IActionResult ProblemError(ProblemDetails? d) 
+            => this.Error(d) ?? Problem("Something unexpected happened", "UnexpectedError", 500);
 
         [HttpGet]
         [Route("/error-local-development")]

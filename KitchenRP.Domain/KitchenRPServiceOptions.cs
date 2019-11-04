@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace KitchenRP.Domain
 {
+    /// <summary>
+    /// Options for configuring services of this project
+    /// </summary>
     public class KitchenRpServiceOptions
     {
         public void LdapConfiguration(Action<LdapConfiguration> configuration)
@@ -31,7 +34,8 @@ namespace KitchenRP.Domain
 
         private Func<IServiceProvider, IAuthenticationService>? _authService;
         private Func<IServiceProvider, IJwtService>? _jwtService;
-
+        
+        //this function is generated dynamically based on the configuration and is used as a factory for services of this type
         internal Func<IServiceProvider, IAuthenticationService> AuthService =>
             _authService ?? throw new ServiceNotInitializedException();
         
