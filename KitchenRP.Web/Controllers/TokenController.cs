@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using KitchenRP.Domain;
+using KitchenRP.Domain.Models;
 using KitchenRP.Domain.Services;
 using KitchenRP.Web.Models;
 using Microsoft.AspNetCore.Authorization;

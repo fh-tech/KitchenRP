@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using KitchenRP.DataAccess;
 
-namespace KitchenRP.Domain.Services
+namespace KitchenRP.Domain.Services.Internal
 {
     public class KitchenRpAuthorizationService : IAuthorizationService
     {
-        public KitchenRpAuthorizationService(IKitchenRpDatabase database)
+        public KitchenRpAuthorizationService(IUserService users)
         {
-            _database = database;
+            _users = users;
         }
 
-        private readonly IKitchenRpDatabase _database;
+        private readonly IUserService _users;
 
         public async Task<IEnumerable<Claim>> Authorize(string uid)
         {
@@ -22,6 +21,7 @@ namespace KitchenRP.Domain.Services
                 new Claim("sub", "if17b094"), 
                 new Claim(ClaimTypes.Role, "admin"),
             });
+            return await _users.GetClaimsForUser(uid);
         }
     }
 }

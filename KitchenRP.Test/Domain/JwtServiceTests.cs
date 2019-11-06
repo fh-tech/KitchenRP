@@ -8,7 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using KitchenRP.DataAccess;
 using KitchenRP.DataAccess.Models;
+using KitchenRP.DataAccess.Repositories;
 using KitchenRP.Domain.Services;
+using KitchenRP.Domain.Services.Internal;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
@@ -25,37 +27,42 @@ namespace KitchenRP.Test.Domain
         private readonly byte[] _testSecret1 = Encoding.ASCII.GetBytes("testSecret1testSecret1testSecret1testSecret1testSecret1");
         private readonly byte[] _testSecret2 = Encoding.ASCII.GetBytes("testSecret2testSecret2testSecret2testSecret2testSecret2");
 
-        private readonly IKitchenRpDatabase _db;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IUserService _userService;
+        
         private readonly Instant _unixStart = Instant.FromUnixTimeSeconds(0);
         private readonly FakeClock _fromUnixStartOneMinuteInterval;
 
         private readonly TokenValidationParameters _accessTokenValidationParameters;
         public JwtServiceTests()
         {
-            var mockDb = new Mock<IKitchenRpDatabase>();
-            mockDb.Setup(db => db.UserGetClaims("testuser1")).Returns(
+            var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(db => db.GetClaimsForUser("testuser1")).Returns(
                 Task.FromResult( new List<Claim>
                 {
                     new Claim("sub", "testuser1"),
                     new Claim("role", "testrole")
                 } as IEnumerable<Claim>));
             
-            mockDb.Setup(db => db.UserGetClaims("testuser2")).Returns(
+            mockUserService.Setup(db => db.GetClaimsForUser("testuser2")).Returns(
                 Task.FromResult( new List<Claim>
                 {
                     new Claim("sub", "testuser2"),
                     new Claim("role", "testrole")
                 } as IEnumerable<Claim>));
+            _userService = mockUserService.Object;
             
-            var addedKeys = new List<(string,string)>();
+            var mockRefreshTokenRepository = new Mock<IRefreshTokenRepository>();
+
+            var addedKeys = new List<(string, string)>();
             
-            mockDb.Setup(db => db.AddNewRefreshToken(It.IsAny<string>(), It.IsAny<Instant>(), It.IsAny<string>()))
-                .Callback<string, Instant, string>((key, exp, sub) =>
+            mockRefreshTokenRepository.Setup(db => db.CreateNewToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Instant>()))
+                .Callback<string, string, Instant>( (key, sub, exp) =>
                 {
                     addedKeys.Remove(addedKeys.Find(a => a.Item1 == sub));
                     addedKeys.Add((sub, key));
                 })
-                .Returns<string, Instant, string>((key, exp, sub) => Task.FromResult(new RefreshToken
+                .Returns<string, string, Instant>((key, sub, exp) => Task.FromResult(new RefreshToken
                 {
                     Id = 1,
                     Expires = exp,
@@ -63,12 +70,12 @@ namespace KitchenRP.Test.Domain
                     Sub = sub
                 }));
             
-            mockDb.Setup(db => db.IsValidRefreshKey(It.IsIn(addedKeys.Select(tuple => tuple.Item2))))
-                .Returns(Task.FromResult(true));
-            mockDb.Setup(db => db.IsValidRefreshKey(It.IsNotIn(addedKeys.Select(tuple => tuple.Item2))))
-                .Returns(Task.FromResult(false));
+            mockRefreshTokenRepository.Setup(db => db.GetForKey(It.IsIn(addedKeys.Select(tuple => tuple.Item2))))
+                .Returns(Task.FromResult(new RefreshToken()));
+            mockRefreshTokenRepository.Setup(db => db.GetForKey(It.IsNotIn(addedKeys.Select(tuple => tuple.Item2))))
+                .Returns(Task.FromResult<RefreshToken>(null));
 
-            _db = mockDb.Object;
+            _refreshTokenRepository = mockRefreshTokenRepository.Object;
             _fromUnixStartOneMinuteInterval = new FakeClock(_unixStart, Duration.FromMinutes(1));
             
             _accessTokenValidationParameters = new TokenValidationParameters
@@ -91,7 +98,7 @@ namespace KitchenRP.Test.Domain
         {
             IdentityModelEventSource.ShowPII = true;
             var service = new JwtService(
-                _db,
+                _refreshTokenRepository,
                 _testSecret1,
                 tokenOffset1,
                 _testSecret2,
@@ -100,7 +107,7 @@ namespace KitchenRP.Test.Domain
                 Clock = _fromUnixStartOneMinuteInterval
             };
             
-            var token = service.GenerateAccessToken(await _db.UserGetClaims(user));
+            var token = service.GenerateAccessToken(await _userService.GetClaimsForUser(user));
 
             var handler = new JwtSecurityTokenHandler();
             handler.ValidateToken(token, _accessTokenValidationParameters, out var validToken);
@@ -123,7 +130,7 @@ namespace KitchenRP.Test.Domain
         public async void GeneratedRefreshTokenValidatesAgainstItself(int refreshTimeout, string user)
         {
             var service = new JwtService(
-                _db,
+                _refreshTokenRepository,
                 _testSecret1, 
                 -1, 
                 _testSecret2, 
@@ -145,7 +152,7 @@ namespace KitchenRP.Test.Domain
         public async void RefreshTokenBecomesStale(string user)
         {
             var service = new JwtService(
-                _db, 
+                _refreshTokenRepository, 
                 _testSecret1, 
                 -1, 
                 _testSecret2, 
