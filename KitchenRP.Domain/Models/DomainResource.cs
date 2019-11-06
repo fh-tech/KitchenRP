@@ -1,11 +1,11 @@
 using System.Text.Json;
-using KitchenRP.DataAccess.Models;
 
 namespace KitchenRP.Domain.Models
 {
     public class DomainResource
     {
-        public DomainResource(long id, string displayName, JsonDocument metaData, string description, DomainResourceType resourceType)
+        public DomainResource(long id, string displayName, JsonDocument metaData, string description,
+            DomainResourceType? resourceType)
         {
             Id = id;
             DisplayName = displayName;
@@ -16,8 +16,8 @@ namespace KitchenRP.Domain.Models
 
         public long Id { get; }
         public string DisplayName { get; }
-        public JsonDocument MetaData { get;  }
-        public string Description { get;  }
-        public DomainResourceType ResourceType { get; }
+        public JsonDocument MetaData { get; }
+        public string Description { get; }
+        public DomainResourceType? ResourceType { get; }
     }
 }

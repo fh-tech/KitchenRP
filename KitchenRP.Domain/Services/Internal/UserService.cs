@@ -7,7 +7,7 @@ using KitchenRP.Domain.Models;
 
 namespace KitchenRP.Domain.Services.Internal
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _users;
 
@@ -16,7 +16,7 @@ namespace KitchenRP.Domain.Services.Internal
             _users = users;
         }
 
-        public async Task<DomainUser> UserById(long id)
+        public async Task<DomainUser?> UserById(long id)
         {
             var u = await _users.UserById(id);
             return Mapper.Map(u);
@@ -34,7 +34,7 @@ namespace KitchenRP.Domain.Services.Internal
             var claims = new List<Claim>
             {
                 new Claim("sub", user.Sub),
-                new Claim("scope", user.Role.RoleName),
+                new Claim("scope", user.Role.RoleName)
             };
             return claims;
         }

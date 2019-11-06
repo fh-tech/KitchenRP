@@ -8,7 +8,8 @@ namespace KitchenRP.DataAccess
 {
     public static class DataAccessServicesExtension
     {
-        public static IServiceCollection AddKitchenRpDataAccessService(this IServiceCollection services, Action<DbContextOptionsBuilder> dbContextOptions)
+        public static IServiceCollection AddKitchenRpDataAccessService(this IServiceCollection services,
+            Action<DbContextOptionsBuilder> dbContextOptions)
         {
             services.AddDbContext<KitchenRpContext>(dbContextOptions);
             services.AddScoped<IUserRepository, UserRepository>();

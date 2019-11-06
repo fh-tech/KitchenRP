@@ -5,20 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KitchenRP.Web.Controllers
 {
-    [ApiController, Route("user")]
-    public class UserController: ControllerBase
+    [ApiController]
+    [Route("user")]
+    public class UserController : ControllerBase
     {
-        private UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService service)
+        public UserController(IUserService service)
         {
             _userService = service;
         }
-        
+
         [HttpGet]
-        public IActionResult GetById(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            var user = _userService.UserById(id);
+            var user = await _userService.UserById(id);
             return Ok(user);
         }
     }
