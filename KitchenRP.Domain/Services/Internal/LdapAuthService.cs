@@ -1,7 +1,7 @@
 using System;
 using Novell.Directory.Ldap;
 
-namespace KitchenRP.Domain.Services
+namespace KitchenRP.Domain.Services.Internal
 {
     public class LdapAuthService : IAuthenticationService
     {

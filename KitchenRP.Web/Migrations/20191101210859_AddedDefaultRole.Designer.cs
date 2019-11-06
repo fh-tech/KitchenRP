@@ -4,6 +4,7 @@ using System.Text.Json;
 using KitchenRP.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KitchenRP.Web.Migrations
 {
     [DbContext(typeof(KitchenRpContext))]
-    partial class KitchenRpContextModelSnapshot : ModelSnapshot
+    [Migration("20191101210859_AddedDefaultRole")]
+    partial class AddedDefaultRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,13 +307,30 @@ namespace KitchenRP.Web.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("RoleName")
-                        .HasColumnName("role_name")
+                    b.Property<string>("Role")
+                        .HasColumnName("role")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("user_roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Role = "user"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Role = "moderator"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Role = "admin"
+                        });
                 });
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.Reservation", b =>

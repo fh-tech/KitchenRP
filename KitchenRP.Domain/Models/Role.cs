@@ -1,4 +1,4 @@
-namespace KitchenRP.Domain
+namespace KitchenRP.Domain.Models
 {
     public static class Roles
     {

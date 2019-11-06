@@ -1,6 +1,8 @@
 using System;
 using KitchenRP.DataAccess;
+using KitchenRP.DataAccess.Repositories;
 using KitchenRP.Domain.Services;
+using KitchenRP.Domain.Services.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KitchenRP.Domain
@@ -26,8 +28,8 @@ namespace KitchenRP.Domain
             {
                 var cfg = new JwtConfiguration();
                 configuration.Invoke(cfg);
-                var dbService = services.GetService<IKitchenRpDatabase>();
-                return new JwtService(dbService, cfg.AccessSecret!, cfg.AccessTimeout!, cfg.RefreshSecret!,
+                var refreshTokens = services.GetService<IRefreshTokenRepository>();
+                return new JwtService(refreshTokens, cfg.AccessSecret!, cfg.AccessTimeout!, cfg.RefreshSecret!,
                     cfg.RefreshTimeout!);
             };
         }
