@@ -1,11 +1,11 @@
-using KitchenRP.DataAccess.Models;
 using NodaTime;
 
 namespace KitchenRP.Domain.Models
 {
     public class DomainStatusChange
     {
-        public DomainStatusChange(DomainReservationStatus previousStatus, DomainReservationStatus currentStatus, string reason, Instant changedAt, DomainUser changedBy)
+        public DomainStatusChange(DomainReservationStatus? previousStatus, DomainReservationStatus? currentStatus,
+            string reason, Instant changedAt, DomainUser? changedBy)
         {
             PreviousStatus = previousStatus;
             CurrentStatus = currentStatus;
@@ -14,10 +14,10 @@ namespace KitchenRP.Domain.Models
             ChangedBy = changedBy;
         }
 
-        public DomainReservationStatus PreviousStatus { get; }
-        public DomainReservationStatus CurrentStatus { get; }
+        public DomainReservationStatus? PreviousStatus { get; }
+        public DomainReservationStatus? CurrentStatus { get; }
         public string Reason { get; }
         public Instant ChangedAt { get; }
-        public DomainUser ChangedBy { get; }
+        public DomainUser? ChangedBy { get; }
     }
 }

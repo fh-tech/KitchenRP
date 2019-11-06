@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace KitchenRP.Domain
 {
     /// <summary>
-    /// Service extension for adding and configuring all services of this project at once
+    ///     Service extension for adding and configuring all services of this project at once
     /// </summary>
     public static class DomainServicesExtension
     {

@@ -6,7 +6,7 @@ using NodaTime;
 
 namespace KitchenRP.DataAccess.Repositories.Internal
 {
-    public class RefreshTokenRepository: IRefreshTokenRepository
+    public class RefreshTokenRepository : IRefreshTokenRepository
     {
         private readonly KitchenRpContext _ctx;
 

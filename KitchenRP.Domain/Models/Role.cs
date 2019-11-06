@@ -6,5 +6,4 @@ namespace KitchenRP.Domain.Models
         public const string Moderator = "moderator,admin";
         public const string User = "user,moderator,admin";
     }
-    
 }

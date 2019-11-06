@@ -8,44 +8,44 @@ namespace KitchenRP.Web.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_reservations_users_owner_id",
-                table: "reservations");
+                "FK_reservations_users_owner_id",
+                "reservations");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_reservations_resources_reserved_resource_id",
-                table: "reservations");
+                "FK_reservations_resources_reserved_resource_id",
+                "reservations");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_resources_resource_types_resource_type_id",
-                table: "resources");
+                "FK_resources_resource_types_resource_type_id",
+                "resources");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_restrictions_resources_restricted_resource_id",
-                table: "restrictions");
+                "FK_restrictions_resources_restricted_resource_id",
+                "restrictions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservation_statuses_current_status_id",
-                table: "status_changes");
+                "FK_status_changes_reservation_statuses_current_status_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservation_statuses_previous_status_id",
-                table: "status_changes");
+                "FK_status_changes_reservation_statuses_previous_status_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservations_reservation_id",
-                table: "status_changes");
+                "FK_status_changes_reservations_reservation_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_users_user_roles_role_id",
-                table: "users");
+                "FK_users_user_roles_role_id",
+                "users");
 
             migrationBuilder.DropColumn(
-                name: "role",
-                table: "user_roles");
+                "role",
+                "user_roles");
 
             migrationBuilder.AlterColumn<string>(
-                name: "sub",
-                table: "users",
+                "sub",
+                "users",
                 fixedLength: true,
                 maxLength: 8,
                 nullable: true,
@@ -55,211 +55,211 @@ namespace KitchenRP.Web.Migrations
                 oldMaxLength: 8);
 
             migrationBuilder.AlterColumn<long>(
-                name: "role_id",
-                table: "users",
+                "role_id",
+                "users",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<string>(
-                name: "email",
-                table: "users",
+                "email",
+                "users",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AddColumn<string>(
-                name: "role_name",
-                table: "user_roles",
+                "role_name",
+                "user_roles",
                 nullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "reservation_id",
-                table: "status_changes",
+                "reservation_id",
+                "status_changes",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<string>(
-                name: "reason",
-                table: "status_changes",
+                "reason",
+                "status_changes",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<long>(
-                name: "previous_status_id",
-                table: "status_changes",
+                "previous_status_id",
+                "status_changes",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<long>(
-                name: "current_status_id",
-                table: "status_changes",
+                "current_status_id",
+                "status_changes",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<long>(
-                name: "restricted_resource_id",
-                table: "restrictions",
+                "restricted_resource_id",
+                "restrictions",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_error",
-                table: "restrictions",
+                "display_error",
+                "restrictions",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<long>(
-                name: "resource_type_id",
-                table: "resources",
+                "resource_type_id",
+                "resources",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<JsonDocument>(
-                name: "meta_data",
-                table: "resources",
+                "meta_data",
+                "resources",
                 nullable: true,
                 oldClrType: typeof(JsonDocument),
                 oldType: "jsonb");
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "resources",
+                "display_name",
+                "resources",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "description",
-                table: "resources",
+                "description",
+                "resources",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "type",
-                table: "resource_types",
+                "type",
+                "resource_types",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "resource_types",
+                "display_name",
+                "resource_types",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<long>(
-                name: "reserved_resource_id",
-                table: "reservations",
+                "reserved_resource_id",
+                "reservations",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<long>(
-                name: "owner_id",
-                table: "reservations",
+                "owner_id",
+                "reservations",
                 nullable: true,
                 oldClrType: typeof(long),
                 oldType: "bigint");
 
             migrationBuilder.AlterColumn<string>(
-                name: "status",
-                table: "reservation_statuses",
+                "status",
+                "reservation_statuses",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "reservation_statuses",
+                "display_name",
+                "reservation_statuses",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "sub",
-                table: "refresh_tokens",
+                "sub",
+                "refresh_tokens",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "key",
-                table: "refresh_tokens",
+                "key",
+                "refresh_tokens",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_reservations_users_owner_id",
-                table: "reservations",
-                column: "owner_id",
-                principalTable: "users",
+                "FK_reservations_users_owner_id",
+                "reservations",
+                "owner_id",
+                "users",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_reservations_resources_reserved_resource_id",
-                table: "reservations",
-                column: "reserved_resource_id",
-                principalTable: "resources",
+                "FK_reservations_resources_reserved_resource_id",
+                "reservations",
+                "reserved_resource_id",
+                "resources",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_resources_resource_types_resource_type_id",
-                table: "resources",
-                column: "resource_type_id",
-                principalTable: "resource_types",
+                "FK_resources_resource_types_resource_type_id",
+                "resources",
+                "resource_type_id",
+                "resource_types",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_restrictions_resources_restricted_resource_id",
-                table: "restrictions",
-                column: "restricted_resource_id",
-                principalTable: "resources",
+                "FK_restrictions_resources_restricted_resource_id",
+                "restrictions",
+                "restricted_resource_id",
+                "resources",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservation_statuses_current_status_id",
-                table: "status_changes",
-                column: "current_status_id",
-                principalTable: "reservation_statuses",
+                "FK_status_changes_reservation_statuses_current_status_id",
+                "status_changes",
+                "current_status_id",
+                "reservation_statuses",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservation_statuses_previous_status_id",
-                table: "status_changes",
-                column: "previous_status_id",
-                principalTable: "reservation_statuses",
+                "FK_status_changes_reservation_statuses_previous_status_id",
+                "status_changes",
+                "previous_status_id",
+                "reservation_statuses",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservations_reservation_id",
-                table: "status_changes",
-                column: "reservation_id",
-                principalTable: "reservations",
+                "FK_status_changes_reservations_reservation_id",
+                "status_changes",
+                "reservation_id",
+                "reservations",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_users_user_roles_role_id",
-                table: "users",
-                column: "role_id",
-                principalTable: "user_roles",
+                "FK_users_user_roles_role_id",
+                "users",
+                "role_id",
+                "user_roles",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -267,45 +267,45 @@ namespace KitchenRP.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_reservations_users_owner_id",
-                table: "reservations");
+                "FK_reservations_users_owner_id",
+                "reservations");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_reservations_resources_reserved_resource_id",
-                table: "reservations");
+                "FK_reservations_resources_reserved_resource_id",
+                "reservations");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_resources_resource_types_resource_type_id",
-                table: "resources");
+                "FK_resources_resource_types_resource_type_id",
+                "resources");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_restrictions_resources_restricted_resource_id",
-                table: "restrictions");
+                "FK_restrictions_resources_restricted_resource_id",
+                "restrictions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservation_statuses_current_status_id",
-                table: "status_changes");
+                "FK_status_changes_reservation_statuses_current_status_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservation_statuses_previous_status_id",
-                table: "status_changes");
+                "FK_status_changes_reservation_statuses_previous_status_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_status_changes_reservations_reservation_id",
-                table: "status_changes");
+                "FK_status_changes_reservations_reservation_id",
+                "status_changes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_users_user_roles_role_id",
-                table: "users");
+                "FK_users_user_roles_role_id",
+                "users");
 
             migrationBuilder.DropColumn(
-                name: "role_name",
-                table: "user_roles");
+                "role_name",
+                "user_roles");
 
             migrationBuilder.AlterColumn<string>(
-                name: "sub",
-                table: "users",
-                type: "character(8)",
+                "sub",
+                "users",
+                "character(8)",
                 fixedLength: true,
                 maxLength: 8,
                 nullable: false,
@@ -315,233 +315,233 @@ namespace KitchenRP.Web.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "role_id",
-                table: "users",
-                type: "bigint",
+                "role_id",
+                "users",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "email",
-                table: "users",
-                type: "text",
+                "email",
+                "users",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "role",
-                table: "user_roles",
-                type: "text",
+                "role",
+                "user_roles",
+                "text",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AlterColumn<long>(
-                name: "reservation_id",
-                table: "status_changes",
-                type: "bigint",
+                "reservation_id",
+                "status_changes",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "reason",
-                table: "status_changes",
-                type: "text",
+                "reason",
+                "status_changes",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "previous_status_id",
-                table: "status_changes",
-                type: "bigint",
+                "previous_status_id",
+                "status_changes",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "current_status_id",
-                table: "status_changes",
-                type: "bigint",
+                "current_status_id",
+                "status_changes",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "restricted_resource_id",
-                table: "restrictions",
-                type: "bigint",
+                "restricted_resource_id",
+                "restrictions",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_error",
-                table: "restrictions",
-                type: "text",
+                "display_error",
+                "restrictions",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "resource_type_id",
-                table: "resources",
-                type: "bigint",
+                "resource_type_id",
+                "resources",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<JsonDocument>(
-                name: "meta_data",
-                table: "resources",
-                type: "jsonb",
+                "meta_data",
+                "resources",
+                "jsonb",
                 nullable: false,
                 oldClrType: typeof(JsonDocument),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "resources",
-                type: "text",
+                "display_name",
+                "resources",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "description",
-                table: "resources",
-                type: "text",
+                "description",
+                "resources",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "type",
-                table: "resource_types",
-                type: "text",
+                "type",
+                "resource_types",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "resource_types",
-                type: "text",
+                "display_name",
+                "resource_types",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "reserved_resource_id",
-                table: "reservations",
-                type: "bigint",
+                "reserved_resource_id",
+                "reservations",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<long>(
-                name: "owner_id",
-                table: "reservations",
-                type: "bigint",
+                "owner_id",
+                "reservations",
+                "bigint",
                 nullable: false,
                 oldClrType: typeof(long),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "status",
-                table: "reservation_statuses",
-                type: "text",
+                "status",
+                "reservation_statuses",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "display_name",
-                table: "reservation_statuses",
-                type: "text",
+                "display_name",
+                "reservation_statuses",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "sub",
-                table: "refresh_tokens",
-                type: "text",
+                "sub",
+                "refresh_tokens",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "key",
-                table: "refresh_tokens",
-                type: "text",
+                "key",
+                "refresh_tokens",
+                "text",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_reservations_users_owner_id",
-                table: "reservations",
-                column: "owner_id",
-                principalTable: "users",
+                "FK_reservations_users_owner_id",
+                "reservations",
+                "owner_id",
+                "users",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_reservations_resources_reserved_resource_id",
-                table: "reservations",
-                column: "reserved_resource_id",
-                principalTable: "resources",
+                "FK_reservations_resources_reserved_resource_id",
+                "reservations",
+                "reserved_resource_id",
+                "resources",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_resources_resource_types_resource_type_id",
-                table: "resources",
-                column: "resource_type_id",
-                principalTable: "resource_types",
+                "FK_resources_resource_types_resource_type_id",
+                "resources",
+                "resource_type_id",
+                "resource_types",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_restrictions_resources_restricted_resource_id",
-                table: "restrictions",
-                column: "restricted_resource_id",
-                principalTable: "resources",
+                "FK_restrictions_resources_restricted_resource_id",
+                "restrictions",
+                "restricted_resource_id",
+                "resources",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservation_statuses_current_status_id",
-                table: "status_changes",
-                column: "current_status_id",
-                principalTable: "reservation_statuses",
+                "FK_status_changes_reservation_statuses_current_status_id",
+                "status_changes",
+                "current_status_id",
+                "reservation_statuses",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservation_statuses_previous_status_id",
-                table: "status_changes",
-                column: "previous_status_id",
-                principalTable: "reservation_statuses",
+                "FK_status_changes_reservation_statuses_previous_status_id",
+                "status_changes",
+                "previous_status_id",
+                "reservation_statuses",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_status_changes_reservations_reservation_id",
-                table: "status_changes",
-                column: "reservation_id",
-                principalTable: "reservations",
+                "FK_status_changes_reservations_reservation_id",
+                "status_changes",
+                "reservation_id",
+                "reservations",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_users_user_roles_role_id",
-                table: "users",
-                column: "role_id",
-                principalTable: "user_roles",
+                "FK_users_user_roles_role_id",
+                "users",
+                "role_id",
+                "user_roles",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }

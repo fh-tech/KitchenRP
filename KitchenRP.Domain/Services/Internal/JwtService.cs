@@ -11,9 +11,13 @@ using NodaTime.Extensions;
 
 namespace KitchenRP.Domain.Services.Internal
 {
-    public class JwtService: IJwtService
+    public class JwtService : IJwtService
     {
-        public IClock Clock { get; set; }
+        private readonly byte[] _accessSecret;
+        private readonly int _accessTimeout;
+        private readonly byte[] _refreshSecret;
+        private readonly int _refreshTimeout;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public JwtService(
             IRefreshTokenRepository refreshTokenRepository,
@@ -30,11 +34,7 @@ namespace KitchenRP.Domain.Services.Internal
             Clock = SystemClock.Instance;
         }
 
-        private readonly byte[] _accessSecret;
-        private readonly byte[] _refreshSecret;
-        private readonly int _accessTimeout;
-        private readonly int _refreshTimeout;
-        private IRefreshTokenRepository _refreshTokenRepository;
+        public IClock Clock { get; set; }
 
         public async Task<JwtSecurityToken?> VerifyRefreshToken(string refreshToken)
         {
@@ -44,7 +44,7 @@ namespace KitchenRP.Domain.Services.Internal
                 ValidateLifetime = true,
                 IssuerSigningKey = new SymmetricSecurityKey(_refreshSecret),
                 ValidateAudience = false,
-                ValidateIssuer = false,
+                ValidateIssuer = false
             };
             var handler = new JwtSecurityTokenHandler();
             handler.ValidateToken(refreshToken, validationParameters, out var validToken);
@@ -53,12 +53,12 @@ namespace KitchenRP.Domain.Services.Internal
             // Signature validation failed
             if (!(validToken is JwtSecurityToken jwt)) return null;
             var refreshKey = jwt.Claims.SingleOrDefault(c => c.Type == "refresh_key")?.Value;
-            
+
             return await _refreshTokenRepository.GetForKey(refreshKey ?? "") != null
-                ? jwt 
+                ? jwt
                 : null;
         }
-        
+
         public async Task<string> GenerateRefreshToken(string sub)
         {
             //Save new refresh token in db
@@ -73,7 +73,7 @@ namespace KitchenRP.Domain.Services.Internal
             var claims = new List<Claim>
             {
                 new Claim("sub", refreshToken.Sub),
-                new Claim("refresh_key", refreshKey),
+                new Claim("refresh_key", refreshKey)
             };
 
             //generate jwt
@@ -90,7 +90,8 @@ namespace KitchenRP.Domain.Services.Internal
             return CreateToken(claimList, Clock.InUtc().GetCurrentInstant(), expires, _accessSecret);
         }
 
-        private static string CreateToken(IReadOnlyCollection<Claim> claimList, Instant notBefore, Instant expires, byte[] secret)
+        private static string CreateToken(IReadOnlyCollection<Claim> claimList, Instant notBefore, Instant expires,
+            byte[] secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var claimDict = claimList.ToDictionary(c => c.Type, v => (object) v.Value);
