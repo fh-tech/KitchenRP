@@ -13,6 +13,7 @@ namespace KitchenRP.DataAccess
         {
             services.AddDbContext<KitchenRpContext>(dbContextOptions);
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             return services;
         }

@@ -9,5 +9,6 @@ namespace KitchenRP.Domain.Services
     {
         Task<IEnumerable<Claim>> GetClaimsForUser(string sub);
         Task<DomainUser> UserById(long id);
+        Task<DomainUser> ActivateNewUser(string uid, string? email);
     }
 }
