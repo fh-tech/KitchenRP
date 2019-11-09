@@ -30,7 +30,7 @@ stages:
             displayName: "Build and push an image to container registry: asp net server"
             inputs:
               command: buildAndPush
-              context: $(Build.SourcesDirectory)
+              buildContext: $(Build.SourcesDirectory)
               repository: $(imageRepository)
               dockerfile: $(dockerfilePath)
               containerRegistry: $(dockerRegistryServiceConnection)
