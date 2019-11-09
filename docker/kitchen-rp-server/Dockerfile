@@ -18,10 +18,6 @@ COPY ./KitchenRP.Test/. ./KitchenRP.Test
 
 RUN dotnet publish -c Release -o out KitchenRP.Web
 
-FROM build as testrunner
-WORKDIR ./KitchenRP.Test/
-ENTRYPOINT ["dotnet", "test", "--logger:trx"]
-
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
