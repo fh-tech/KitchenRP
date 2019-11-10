@@ -9,10 +9,10 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '9b93cbc2-23d4-426a-b46e-162b7510d7eb'
-  imageRepository: 'fhtechkitchenrp'
+  imageRepository: 'fhtechkitchenrp-frontend'
   containerRegistry: 'kitchenrp.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/docker/frontend/Dockerfile'
-  tag: 'frontend:$(Build.BuildId)-$(Build.SourceBranchName)'
+  tag: '$(Build.BuildId)-$(Build.SourceBranchName)'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
