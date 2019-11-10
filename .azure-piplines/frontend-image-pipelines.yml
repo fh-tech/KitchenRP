@@ -11,8 +11,8 @@ variables:
   dockerRegistryServiceConnection: '9b93cbc2-23d4-426a-b46e-162b7510d7eb'
   imageRepository: 'fhtechkitchenrp'
   containerRegistry: 'kitchenrp.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/docker/database/Dockerfile'
-  tag: '$(Build.BuildId)-$(Build.SourceBranchName)'
+  dockerfilePath: '$(Build.SourcesDirectory)/docker/frontend/Dockerfile'
+  tag: 'frontend:$(Build.BuildId)-$(Build.SourceBranchName)'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -27,7 +27,7 @@ stages:
           vmImage: $(vmImageName)
         steps:
           - task: Docker@2
-            displayName: "Build and push an image to container registry: asp net server"
+            displayName: "Build and push an image to container registry: frontend server"
             inputs:
               command: buildAndPush
               buildContext: $(Build.SourcesDirectory)
