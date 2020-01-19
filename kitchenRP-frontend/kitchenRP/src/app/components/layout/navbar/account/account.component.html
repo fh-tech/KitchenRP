@@ -9,11 +9,17 @@
                 <div class="border-bottom mb-2">
                     Account Details:
                 </div>
+                <!-- TODO: display info -->
                 <div *ngIf="currentUser | async as user">
-                    Name: {{user.sub}}
-                </div>
-                <div>
-                    UID: Test
+                    <div>
+                        Name: {{user.sub}}
+                    </div>
+                    <div>
+                        Email: {{user.email}}
+                    </div>
+                    <div>
+                        Role: {{user.role}}
+                    </div>
                 </div>
             </div>
             <button type="button" class="btn btn-outline-dark" (click)="logoutUser()" style="width: 50%; margin-left: 25%; margin-right: 25%;">

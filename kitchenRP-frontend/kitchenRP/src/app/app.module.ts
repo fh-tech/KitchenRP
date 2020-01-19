@@ -35,6 +35,9 @@ import { ResourceManagementComponent } from './components/admin/admin-tabs/resou
 import { ModalResourceComponent } from './modals/modal-resource/modal-resource.component';
 import { ResourceInfoComponent } from './components/calendar/resource-info/resource-info.component';
 import { TokenInterceptor } from "./token.interceptor";
+import { AuthGuardUser } from "./services/auth/auth-guard-user.service";
+import {AuthGuardAdmin} from "./services/auth/auth-guard-admin.service";
+import {AuthGuardModerator} from "./services/auth/auth-guard-moderator.service";
 
 @NgModule({
   declarations: [
@@ -72,7 +75,12 @@ import { TokenInterceptor } from "./token.interceptor";
     ReactiveFormsModule,
     FullCalendarModule
   ],
-  providers: [{provide: 'API_BASE_URL', useValue: environment.baseUrl}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
+  providers: [
+    AuthGuardUser,
+    AuthGuardModerator,
+    AuthGuardAdmin,
+    {provide: 'API_BASE_URL', useValue: environment.baseUrl}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     ModalReservationComponent,
