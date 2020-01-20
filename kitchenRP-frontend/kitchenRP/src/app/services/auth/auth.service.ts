@@ -62,6 +62,41 @@ export class AuthService {
         return !!this.getAccessToken();
     }
 
+    public isAnyUser(): boolean {
+        let isAnyUser = false;
+        /*
+        this.currentUser$.subscribe((val) => {
+            isAnyUser = val.role === 'user' || val.role === 'moderator' || val.role === 'admin';
+            console.log("In currentUser$: ");
+            console.log("isAnyUser: " + isAnyUser);
+            console.log("val: " + val);
+        });
+        */
+        return isAnyUser;
+    }
+
+    public isUser(): boolean {
+        let isUser = false;
+        /*
+        this.currentUser$.subscribe((val) => {
+            isUser = val.role === 'user';
+        });
+        */
+        return isUser;
+    }
+
+    public isModerator() {
+        return this.currentUser$.subscribe((val) => {
+            return val.role === 'moderator';
+        });
+    }
+
+    public isAdmin() {
+        return this.currentUser$.subscribe((val) => {
+            return val.role === 'admin';
+        });
+    }
+
     public getUsername() {
         return this.loggedInUser;
     }
