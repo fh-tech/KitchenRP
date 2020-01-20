@@ -33,10 +33,12 @@ export class FullcalComponent implements OnInit {
         day: 'Day'
     };
 
-    private events: any[] = [];
+    public events: any[] = [];
 
     @Output()
     public currentDateRange = new EventEmitter<{start:Date, end:Date}>();
+    @Output()
+    public dateRangeSelected = new EventEmitter<{start: Date, end: Date}>();
 
 
     dateChanged(event){
@@ -47,21 +49,40 @@ export class FullcalComponent implements OnInit {
     }
 
     dateClickedHandler(event){
-        console.log(event)
+        let end = new Date(event.date);
+        if(event.allDay === true){
+            end.setDate(event.date.getDate() +1);
+
+        }else{
+            end.setHours(event.date.getHours() +1)
+        }
+        this.dateRangeSelected.emit(
+            {start: event.date, end: end}
+        );
     }
+
+    dateRangeSelectedCallback(event){
+        this.dateRangeSelected.emit(
+            {start: event.start, end: event.end}
+        )
+    }
+
     eventClickedHandler(event){
         console.log(event)
     }
 
-    public addReservation(reservation: Reservation){
-        let event = {
+    public addReservations(reservations: Reservation[]){
+         this.events = reservations.map(reservation => { return {
             start: reservation.startTime,
             end: reservation.endTime,
             backgroundColor: "#3369dd"
-        };
-        if(this.events.map(e => JSON.stringify(e)).indexOf(JSON.stringify(event)) === -1){
-            this.events.push(event);
-        }
+        }});
+    }
+
+    public dateRangeUnselect(event){
+        //this.dateRangeSelected.emit(
+        //    {start: new Date(), end: new Date()}
+        //)
     }
 
 }
