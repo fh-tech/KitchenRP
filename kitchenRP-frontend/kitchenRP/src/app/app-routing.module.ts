@@ -8,19 +8,21 @@ import {AuthGuardUser} from "./services/auth/auth-guard-user.service";
 import {AuthGuardAdmin} from "./services/auth/auth-guard-admin.service";
 import {LoginComponent} from "./components/login/login.component";
 import {AuthGuardModerator} from "./services/auth/auth-guard-moderator.service";
+import {AuthGuardLoggedIn} from "./services/auth/auth-guard-logged-in";
 
 
 const routes: Routes = [
-    {path: 'login', component: LoginComponent},
+    {path: 'login', canActivate: [AuthGuardLoggedIn], component: LoginComponent},
     {path: 'calendar', canActivate: [AuthGuardUser], component: CalendarComponent},
     {path: 'reservations', canActivate: [AuthGuardUser], component: ReservationsComponent},
     {path: 'all-reservations', canActivate: [AuthGuardModerator], component: AllReservationsComponent},
     {path: 'admin', canActivate: [AuthGuardAdmin], component: AdminComponent},
+    {path: '', redirectTo: '/calendar', pathMatch: 'full'},
     {path: '**', redirectTo: '/calendar'}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -7,23 +7,27 @@ import {User} from "../../types/user";
 @Injectable()
 export class AuthGuardAdmin implements CanActivate {
     private isLoggedIn: Boolean;
+    private isAnyUser: Boolean;
     private currentUser$: Observable<User>;
 
     constructor(private router: Router, private authService: AuthService) {
         this.isLoggedIn = this.authService.isLoggedIn();
+        this.isAnyUser = this.authService.isAnyUser();
         this.currentUser$ = this.authService.currentUser$;
     }
 
     canActivate(route: ActivatedRouteSnapshot,
                 state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         let permitted = false;
-        if (!this.isLoggedIn) {
+        if (!this.isLoggedIn || !this.isAnyUser) {
             this.router.navigate(['login']);
         } else {
             this.currentUser$.subscribe((user) => {
                 if (user.role === 'admin') {
                     permitted = true;
                 }
+                console.log("admin guard:");
+                console.log(user);
             });
         }
         return permitted;

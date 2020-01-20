@@ -38,55 +38,57 @@ import { TokenInterceptor } from "./token.interceptor";
 import { AuthGuardUser } from "./services/auth/auth-guard-user.service";
 import {AuthGuardAdmin} from "./services/auth/auth-guard-admin.service";
 import {AuthGuardModerator} from "./services/auth/auth-guard-moderator.service";
+import {AuthGuardLoggedIn} from "./services/auth/auth-guard-logged-in";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    ReservationsComponent,
-    CalendarComponent,
-    AccountComponent,
-    SidebarComponent,
-    FooterComponent,
-    ReservationControlComponent,
-    FullcalComponent,
-    ReservationStatusListComponent,
-    AdminComponent,
-    AdminTabsComponent,
-    UserManagementComponent,
-    ReservationModalComponent,
-    AllReservationsComponent,
-    AllReservationsStatusListComponent,
-    LoginComponent,
-    ModalReservationComponent,
-    ModalUserComponent,
-    RestrictionManagementComponent,
-    ModalRestrictionComponent,
-    ResourceManagementComponent,
-    ModalResourceComponent,
-    ResourceInfoComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FullCalendarModule
-  ],
-  providers: [
-    AuthGuardUser,
-    AuthGuardModerator,
-    AuthGuardAdmin,
-    {provide: 'API_BASE_URL', useValue: environment.baseUrl}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [
-    ModalReservationComponent,
-    ModalResourceComponent,
-    ModalUserComponent,
-    ModalRestrictionComponent
-  ]
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        ReservationsComponent,
+        CalendarComponent,
+        AccountComponent,
+        SidebarComponent,
+        FooterComponent,
+        ReservationControlComponent,
+        FullcalComponent,
+        ReservationStatusListComponent,
+        AdminComponent,
+        AdminTabsComponent,
+        UserManagementComponent,
+        ReservationModalComponent,
+        AllReservationsComponent,
+        AllReservationsStatusListComponent,
+        LoginComponent,
+        ModalReservationComponent,
+        ModalUserComponent,
+        RestrictionManagementComponent,
+        ModalRestrictionComponent,
+        ResourceManagementComponent,
+        ModalResourceComponent,
+        ResourceInfoComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FullCalendarModule
+    ],
+    providers: [
+        AuthGuardUser,
+        AuthGuardModerator,
+        AuthGuardAdmin,
+        AuthGuardLoggedIn,
+        {provide: 'API_BASE_URL', useValue: environment.baseUrl}, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+    ],
+    bootstrap: [AppComponent],
+    entryComponents: [
+        ModalReservationComponent,
+        ModalResourceComponent,
+        ModalUserComponent,
+        ModalRestrictionComponent
+    ]
 })
 export class AppModule { }
