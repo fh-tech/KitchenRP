@@ -12,11 +12,11 @@ import {AuthGuardLoggedIn} from "./services/auth/auth-guard-logged-in";
 
 
 const routes: Routes = [
-    {path: 'login', canActivate: [AuthGuardLoggedIn], component: LoginComponent},
-    {path: 'calendar', canActivate: [AuthGuardUser], component: CalendarComponent},
-    {path: 'reservations', canActivate: [AuthGuardUser], component: ReservationsComponent},
-    {path: 'all-reservations', canActivate: [AuthGuardModerator], component: AllReservationsComponent},
-    {path: 'admin', canActivate: [AuthGuardAdmin], component: AdminComponent},
+    {path: 'login', canActivate: [], component: LoginComponent},
+    {path: 'calendar', canActivate: [AuthGuardLoggedIn, AuthGuardUser], component: CalendarComponent},
+    {path: 'reservations', canActivate: [AuthGuardLoggedIn,AuthGuardUser], component: ReservationsComponent},
+    {path: 'all-reservations', canActivate: [AuthGuardLoggedIn, AuthGuardModerator], component: AllReservationsComponent},
+    {path: 'admin', canActivate: [AuthGuardLoggedIn, AuthGuardAdmin], component: AdminComponent},
     {path: '', redirectTo: '/calendar', pathMatch: 'full'},
     {path: '**', redirectTo: '/calendar'}
 ];

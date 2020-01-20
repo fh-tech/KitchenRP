@@ -12,15 +12,20 @@ import {Router} from "@angular/router";
 export class AccountComponent implements OnInit {
 
     currentUser: Observable<User>;
+    isCollapsed: boolean = false;
     constructor(private authService: AuthService, private router: Router,) {
         this.currentUser = this.authService.currentUser$;
-
-        console.log("account component:");
-        console.log(this.authService.getUsername());
-        console.log(this.authService.isAnyUser());
     }
 
     ngOnInit() {
+        this.currentUser.subscribe(u =>
+            console.log(u)
+        )
+    }
+
+
+    toggle(){
+        this.isCollapsed = !this.isCollapsed;
     }
 
     private logoutUser() {

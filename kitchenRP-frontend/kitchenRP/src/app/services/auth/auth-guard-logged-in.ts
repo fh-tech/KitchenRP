@@ -3,27 +3,20 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "
 import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
 import {User} from "../../types/user";
+import {tap} from "rxjs/operators";
 
 @Injectable()
 export class AuthGuardLoggedIn implements CanActivate {
-    private isLoggedIn: Boolean;
-    private isAnyUser: Boolean;
-    private currentUser$: Observable<User>;
 
     constructor(private router: Router, private authService: AuthService) {
-        this.isLoggedIn = this.authService.isLoggedIn();
-        this.isAnyUser = this.authService.isAnyUser();
-        this.currentUser$ = this.authService.currentUser$;
     }
 
     canActivate(route: ActivatedRouteSnapshot,
                 state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        let permitted = false;
-        if (this.isLoggedIn && this.isAnyUser) {
-            this.router.navigate(['calendar']);
-        } else {
-            permitted = true;
+        if (this.authService.isLoggedIn()){
+            return true;
+        }else{
+            this.router.navigate(["login"]).then();
         }
-        return permitted;
     }
 }

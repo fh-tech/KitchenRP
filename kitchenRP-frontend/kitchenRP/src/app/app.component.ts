@@ -10,6 +10,8 @@ import {Router} from "@angular/router";
 export class AppComponent {
   title = 'kitchenRP';
 
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router) {
+      authService.ngOnInit()
+  }
 
 }
