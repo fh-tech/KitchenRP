@@ -17,8 +17,7 @@ export class AuthGuardAdmin implements CanActivate {
             .pipe(
                 tap(
                     isUser => {
-                        console.log("is not a admin");
-
+                        // console.log("is not a admin");
                         if(!isUser) this.router.navigate(["calendar"]).then();
                     }
                 )

@@ -13,14 +13,12 @@ export class AccountComponent implements OnInit {
 
     currentUser: Observable<User>;
     isCollapsed: boolean = false;
-    constructor(private authService: AuthService, private router: Router,) {
+    constructor(private authService: AuthService, private router: Router) {
         this.currentUser = this.authService.currentUser$;
     }
 
     ngOnInit() {
-        this.currentUser.subscribe(u =>
-            console.log(u)
-        )
+
     }
 
 

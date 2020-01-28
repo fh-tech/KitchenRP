@@ -12,17 +12,18 @@ export class LoginComponent implements OnInit {
     private username: string = "";
     private password: string = "";
 
+    private invalidLogin: boolean = false;
+
     constructor(private authService: AuthService, private router: Router){}
 
     public loginUser() {
-        console.log(this.authService.isLoggedIn());
-
         let loginResult = this.authService.login(this.username, this.password);
         loginResult.subscribe((val) => {
             if (val === true) {
+                this.invalidLogin = false;
                 this.router.navigate(['calendar']);
             } else {
-                // show error
+                this.invalidLogin = true;
             }
         });
     }

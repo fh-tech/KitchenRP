@@ -78,7 +78,7 @@ export class AuthService implements  OnInit {
     public isAnyUser(): Observable<boolean> {
         return  this.currentUser$.pipe(
             tap(u => console.log(u)),
-            map((val) => val.role === 'user' || val.role === 'moderator' || val.role === 'admin'));
+            map((val) => val !== null && (val.role === 'user' || val.role === 'moderator' || val.role === 'admin')));
     }
 
     public userScope(): Observable<string> {

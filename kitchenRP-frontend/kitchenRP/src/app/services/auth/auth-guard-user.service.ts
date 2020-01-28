@@ -16,8 +16,8 @@ export class AuthGuardUser implements CanActivate {
             .pipe(
                 tap(
                     isUser => {
-                        console.log("is not a user");
-                       if(!isUser) this.router.navigate(["login"]).then();
+                        // console.log("is not a user");
+                        if(!isUser) this.router.navigate(["login"]).then();
                     }
                 )
             )
