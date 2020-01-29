@@ -31,9 +31,8 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="duration-picker">Duration (min)</label>
-                    <input type="number" class="form-control" id="duration-picker" name="duration-picker"
-                           [(ngModel)]="duration.minute">
+                    <label for="status">Status</label>
+                    <input type="text" class="form-control" id="status" name="status" [value]="status" readonly>
                 </div>
             </div>
             <div class="row">
@@ -41,6 +40,11 @@
                     <label for="inputStartTime">Start time</label>
                     <ngb-timepicker name="start-time-picker" id="inputStartTime"
                                     [(ngModel)]="timeStart"></ngb-timepicker>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="duration-picker">Duration (min)</label>
+                    <input type="number" class="form-control" id="duration-picker" name="duration-picker"
+                           [(ngModel)]="duration.minute">
                 </div>
             </div>
         </form>

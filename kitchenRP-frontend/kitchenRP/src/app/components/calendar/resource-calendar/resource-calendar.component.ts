@@ -13,6 +13,7 @@ import {ModalResourceComponent} from "../../../modals/modal-resource/modal-resou
 import {ModalReservationComponent} from "../../../modals/modal-reservation/modal-reservation.component";
 import {ModalUserComponent} from "../../../modals/modal-user/modal-user.component";
 import {AuthService} from "../../../services/auth/auth.service";
+import {UserService} from "../../../services/user/user.service";
 
 @Component({
     selector: 'app-resource-calendar',
@@ -39,6 +40,7 @@ export class ResourceCalendarComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
                 private resourceService: ResourceService,
+                private userService: UserService,
                 private reservationService: ReservationService,
                 private modalService: NgbModal,
                 private authService: AuthService) {
@@ -62,7 +64,8 @@ export class ResourceCalendarComponent implements OnInit {
             );
 
         this.reservations$.subscribe(r => {
-            this.cal.addReservations(r)
+            this.cal.addReservations(r);
+            this.cal.eventClicked.subscribe(event => this.openReservationModal(event));
         });
     }
 
@@ -101,6 +104,7 @@ export class ResourceCalendarComponent implements OnInit {
         // ref.componentInstance.duration = {hour: Math.floor(minuteDiff), minute: Math.floor(minuteDiff)};
         ref.componentInstance.duration = {hour: Math.floor(0), minute: Math.floor(60)};
 
+        ref.componentInstance.status = "";
         this.resource$.subscribe(r => {
             ref.componentInstance.resourceId = r.id;
             ref.componentInstance.resourceName = r.displayName;
@@ -117,7 +121,39 @@ export class ResourceCalendarComponent implements OnInit {
         )
     }
 
+    openReservationModal(event: any) {
+        const ref = this.modalService.open(ModalReservationComponent,{ windowClass : "modal-size-lg"});
+        ref.componentInstance.Add = false;
+
+        ref.componentInstance.date = event.start;
+        ref.componentInstance.timeStart.hour = event.start.getHours();
+        ref.componentInstance.timeStart.minute = event.start.getMinutes();
+
+        const milliDiff = event.end.getTime() - event.start.getTime();
+        const minuteDiff = milliDiff / (1000 * 60);
+        const hourDiff = minuteDiff / 60;
+        ref.componentInstance.duration = {hour: Math.floor(minuteDiff), minute: Math.floor(minuteDiff)};
+
+        ref.componentInstance.status = event.status;
+        this.resourceService.getById(event.extendedProps.reservationId).subscribe(r => {
+            ref.componentInstance.resourceId = r.id;
+            ref.componentInstance.resourceName = r.displayName;
+        });
+        this.userService.getById(event.extendedProps.userId).subscribe(u => {
+            ref.componentInstance.userId = u.id;
+            ref.componentInstance.userName = u.sub;
+        });
+
+
+        ref.result.then(
+            _ => {
+                this.refreshSubject.next(true)
+            }
+        )
+    }
+
     ngOnInit() {
+
     }
 
 }

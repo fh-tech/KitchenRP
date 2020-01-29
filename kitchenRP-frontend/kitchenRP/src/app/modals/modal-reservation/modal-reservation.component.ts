@@ -22,6 +22,7 @@ export class ModalReservationComponent implements OnInit {
     resourceName: string;
     userId: number;
     userName: string;
+    status: string;
 
     constructor(private activeModal: NgbActiveModal,
                 private reservationService: ReservationService) {

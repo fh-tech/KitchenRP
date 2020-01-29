@@ -39,7 +39,8 @@ export class FullcalComponent implements OnInit {
     public currentDateRange = new EventEmitter<{start:Date, end:Date}>();
     @Output()
     public dateRangeSelected = new EventEmitter<{start: Date, end: Date}>();
-
+    @Output()
+    public eventClicked = new EventEmitter<any>();
 
     dateChanged(event){
         this.currentDateRange.emit({
@@ -68,13 +69,19 @@ export class FullcalComponent implements OnInit {
     }
 
     eventClickedHandler(event){
-        console.log(event)
+        this.eventClicked.next(event.event);
     }
 
-    public addReservations(reservations: Reservation[]){
-         this.events = reservations.map(reservation => { return {
+    public addReservations(reservations: any[]){
+        this.events = reservations.map(reservation => { return {
             start: reservation.startTime,
             end: reservation.endTime,
+            reservationId: reservation.id,
+            userId: reservation.owner.id,
+            userName: reservation.owner.sub,
+            resourceId: reservation.reservedResource.id,
+            resourceName: reservation.reservedResource.displayName,
+            status: reservation.status,
             backgroundColor: "#3369dd"
         }});
     }
