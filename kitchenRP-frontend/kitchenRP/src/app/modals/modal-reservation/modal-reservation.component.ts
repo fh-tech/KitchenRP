@@ -9,19 +9,26 @@ import {ReservationService} from "../../services/reservation/reservation.service
 })
 export class ModalReservationComponent implements OnInit {
 
+    @Input() Add: boolean;
+    reservationId: number;
+
+    dateField;
+    dateString: string;
     date = new Date();
     duration = {hour: 0, minute: 0};
     timeStart = {hour: 0, minute: 0};
 
     resourceId: number;
+    resourceName: string;
     userId: number;
+    userName: string;
 
     constructor(private activeModal: NgbActiveModal,
                 private reservationService: ReservationService) {
     }
 
     saveReservation() {
-
+        let test = new Date(this.dateField.year + "-" + this.dateField.month + "-" + this.dateField.day);
         let startDate = new Date(this.date);
         startDate.setHours(this.timeStart.hour);
         startDate.setMinutes(this.timeStart.minute);
@@ -30,15 +37,27 @@ export class ModalReservationComponent implements OnInit {
             + (1000 * 60) * this.duration.minute
             + (1000 * 60 * 60) * this.duration.hour);
 
+        console.log({
+            startTime: startDate.toISOString(),
+            endTime: endDate.toISOString(),
+            resourceId: this.resourceId,
+            userId: this.userId
+        });
+
         this.reservationService.create({
             allowNotifications: true,
             startTime: startDate.toISOString(),
             endTime: endDate.toISOString(),
             resourceId: this.resourceId,
-            userId: this.userId
+            userId: 6 //this.userId
         }).subscribe(
             _ => this.activeModal.close()
         )
+    }
+
+    delete(){
+        this.reservationService.delete(this.reservationId).subscribe();
+        this.activeModal.close();
     }
 
     ngOnInit() {

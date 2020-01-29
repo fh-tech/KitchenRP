@@ -6,39 +6,48 @@
         </button>
     </div>
     <div class="modal-body">
-        <form name="new-reservation-form">
+        <form name="reservation-form">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="inputUser">User</label>
+                    <input type="text" class="form-control" id="inputUser" [value]="userName" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputResource">Resource</label>
+                    <input type="text" class="form-control" id="inputResource" [value]="resourceName" readonly>
+                </div>
+            </div>
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="inputDate">Start date</label>
                     <div class="input-group date" id="datePicker">
-                        <input type="text" class="form-control" id="inputDate" [value]="date" placeholder="dd-mm-yyyy"
-                               name="datepickerReservation" ngbDatepicker #d="ngbDatepicker">
+                        <input type="text" class="form-control" id="inputDate" [(ngModel)]="dateField" [value]="dateString" placeholder="yyyy-mm-dd"
+                               name="dateField" ngbDatepicker #d="ngbDatepicker">
                         <span class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </button>
-            </span>
+                          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                          </button>
+                        </span>
                     </div>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="duration-picker">Duration (min)</label>
+                    <input type="number" class="form-control" id="duration-picker" name="duration-picker"
+                           [(ngModel)]="duration.minute">
+                </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-md-6">
                     <label for="inputStartTime">Start time</label>
                     <ngb-timepicker name="start-time-picker" id="inputStartTime"
                                     [(ngModel)]="timeStart"></ngb-timepicker>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <div class="input-group date" id="duration">
-                        <label for="duration-picker">Duration in minutes
-                        </label>
-                        <input type="number" class="form-control" id="duration-picker" [(ngModel)]="duration.minute">
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
     <div class="modal-footer">
+        <button *ngIf="!Add" type="button" class="btn btn-danger mr-auto" (click)="delete()">Delete</button>
         <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveReservation()">Save changes</button>
+        <button *ngIf="Add" type="button" class="btn btn-primary" (click)="saveReservation()">Save changes</button>
     </div>
 </div>

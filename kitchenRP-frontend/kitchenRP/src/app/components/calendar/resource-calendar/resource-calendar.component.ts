@@ -72,38 +72,44 @@ export class ResourceCalendarComponent implements OnInit {
 
     handleDateRangeSelection(range: { start: Date, end: Date }) {
 
-        console.log("range form event:");
-        console.log(range);
+        //console.log("range form event:");
+        //console.log(range);
         this.lastSelectedRange = range;
+        //this.openNewReservationModal();
     }
 
     openNewReservationModal() {
-
-        console.log(this.lastSelectedRange);
-
-        const ref = this.modalService.open(ModalReservationComponent, {});
+        const ref = this.modalService.open(ModalReservationComponent,{ windowClass : "modal-size-lg"});
+        ref.componentInstance.Add = true;
         ref.componentInstance.date = this.lastSelectedRange.start;
+        ref.componentInstance.dateString = this.lastSelectedRange.start.getFullYear() + "-" + this.lastSelectedRange.start.getMonth() + "-" + this.lastSelectedRange.start.getDate();
+        // ref.componentInstance.dateField = {
+        //     year: this.lastSelectedRange.start.getFullYear(),
+        //     month: this.lastSelectedRange.start.getMonth(),
+        //     day: this.lastSelectedRange.start.getDate(),
+        // };
 
-        ref.componentInstance.timeStart.hour = this.lastSelectedRange.start.getHours();
-        ref.componentInstance.timeStart.minute = this.lastSelectedRange.start.getMinutes();
-
-        this.resource$.subscribe(r =>
-            ref.componentInstance.resourceId = r.id);
-
-        this.authService.currentUser$.subscribe(u =>
-            ref.componentInstance.userId = u.id);
+        // ref.componentInstance.timeStart.hour = this.lastSelectedRange.start.getHours();
+        // ref.componentInstance.timeStart.minute = this.lastSelectedRange.start.getMinutes();
+        let now = new Date();
+        ref.componentInstance.timeStart.hour = now.getHours();
+        ref.componentInstance.timeStart.minute = now.getMinutes();
 
         const milliDiff = this.lastSelectedRange.end.getTime() - this.lastSelectedRange.start.getTime();
-
-        console.log(this.lastSelectedRange.end.getTime());
-        console.log(this.lastSelectedRange.start.getTime());
         const minuteDiff = milliDiff / (1000 * 60);
-        console.log(minuteDiff);
-
         const hourDiff = minuteDiff / 60;
-        console.log(hourDiff);
+        // ref.componentInstance.duration = {hour: Math.floor(minuteDiff), minute: Math.floor(minuteDiff)};
+        ref.componentInstance.duration = {hour: Math.floor(0), minute: Math.floor(60)};
 
-        ref.componentInstance.duration = {hour: 0, minute: Math.floor(minuteDiff)};
+        this.resource$.subscribe(r => {
+            ref.componentInstance.resourceId = r.id;
+            ref.componentInstance.resourceName = r.displayName;
+        });
+        this.authService.currentUser$.subscribe(u => {
+            ref.componentInstance.userId = u.id;
+            ref.componentInstance.userName = u.sub;
+        });
+
         ref.result.then(
             _ => {
                 this.refreshSubject.next(true)
