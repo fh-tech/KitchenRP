@@ -20,21 +20,25 @@ namespace KitchenRP.DataAccess.Repositories.Internal
             string resourceTypeName)
         {
             var resourceType = await FindResourceTypByType(resourceTypeName);
-            var resource = new Resource(displayName, metaData, description, resourceType);
+            var resource = new Resource(displayName, metaData, description, resourceType) {IsActive = true};
             _ctx.Resources.Add(resource);
             await _ctx.SaveChangesAsync();
             return resource;
         }
 
-        public ValueTask<Resource> FindById(long id)
+        public Task<Resource> FindById(long id)
         {
-            return _ctx.Resources.FindAsync(id);
+            return _ctx.Resources
+                .Include(r => r.ResourceType)
+                .Where(r =>  r.IsActive)
+                .FirstAsync(r => r.Id == id);
         }
 
         public Task<List<Resource>> All()
         {
             return _ctx.Resources
                 .Include(r => r.ResourceType)
+                .Where(r =>  r.IsActive)
                 .ToListAsync();
         }
 
@@ -42,6 +46,7 @@ namespace KitchenRP.DataAccess.Repositories.Internal
         {
             var resources = _ctx.Resources
                 .Include(r => r.ResourceType)
+                .Where(r =>  r.IsActive)
                 .Where(r => r.ResourceType.Type == type);
 
             return resources.ToListAsync();
@@ -57,7 +62,8 @@ namespace KitchenRP.DataAccess.Repositories.Internal
 
         public Task<List<ResourceType>> TypeAll()
         {
-            return _ctx.ResourceTypes.ToListAsync();
+            return _ctx.ResourceTypes
+                .ToListAsync();
         }
 
         public async Task<ResourceType> FindResourceTypByType(string type)
@@ -65,6 +71,15 @@ namespace KitchenRP.DataAccess.Repositories.Internal
             var resourceType = await _ctx.ResourceTypes.SingleOrDefaultAsync(r => r.Type == type);
             return resourceType ??
                    throw new EntityNotFoundException(nameof(ResourceType), $"(type == {type})");
+        }
+
+        public async Task<Resource> Deactivate(long id)
+        {
+            var resource = await _ctx.Resources
+                .FindAsync(id);
+            resource.IsActive = false;
+            await _ctx.SaveChangesAsync();
+            return resource;
         }
     }
 }

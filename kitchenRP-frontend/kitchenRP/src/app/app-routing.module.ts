@@ -9,7 +9,7 @@ import {AuthGuardAdmin} from "./services/auth/auth-guard-admin.service";
 import {LoginComponent} from "./components/login/login.component";
 import {AuthGuardModerator} from "./services/auth/auth-guard-moderator.service";
 import {AuthGuardLoggedIn} from "./services/auth/auth-guard-logged-in";
-
+import {ResourceCalendarComponent} from "./components/calendar/resource-calendar/resource-calendar.component";
 
 const routes: Routes = [
     {path: 'login', canActivate: [], component: LoginComponent},

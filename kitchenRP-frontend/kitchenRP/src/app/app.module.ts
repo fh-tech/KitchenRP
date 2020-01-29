@@ -39,7 +39,7 @@ import { AuthGuardUser } from "./services/auth/auth-guard-user.service";
 import {AuthGuardAdmin} from "./services/auth/auth-guard-admin.service";
 import {AuthGuardModerator} from "./services/auth/auth-guard-moderator.service";
 import {AuthGuardLoggedIn} from "./services/auth/auth-guard-logged-in";
-
+import { ResourceCalendarComponent } from './components/calendar/resource-calendar/resource-calendar.component';
 @NgModule({
     declarations: [
         AppComponent,

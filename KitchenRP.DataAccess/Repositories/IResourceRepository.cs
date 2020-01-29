@@ -12,7 +12,7 @@ namespace KitchenRP.DataAccess.Repositories
 
         Task<List<Resource>> ByType(string type);
 
-        ValueTask<Resource> FindById(long id);
+        Task<Resource> FindById(long id);
         
         Task<List<Resource>> All();
 
@@ -21,5 +21,7 @@ namespace KitchenRP.DataAccess.Repositories
         Task<List<ResourceType>> TypeAll();
 
         Task<ResourceType> FindResourceTypByType(string type);
+        
+        Task<Resource> Deactivate(long id);
     }
 }

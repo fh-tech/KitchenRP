@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using KitchenRP.Domain.Commands;
@@ -20,12 +21,19 @@ namespace KitchenRP.Web.Controllers
             _userService = service;
             _mapper = mapper;
         }
-
+/*
         [HttpGet]
-        public async Task<IActionResult> GetByUsername(string username)
+        public async Task<IActionResult> All()
+        {
+            var users = await _userService.All();
+            return Ok(users.Select(_mapper.Map<UserResponse>));
+        }
+*/        
+        [HttpGet]
+        public async Task<IActionResult> GetByUsername(string? username = null)
         {
             var user = await _userService.UserByName(username);
-            return Ok(_mapper.Map<UserResponse>(user));
+            return Ok(user.Select(_mapper.Map<UserResponse>));
         }
         
         /// <summary>
@@ -67,7 +75,7 @@ namespace KitchenRP.Web.Controllers
 
         
         [HttpPut]
-        [Route("/{id}/promote")]
+        [Route("{id}/promote")]
         public async Task<IActionResult> PromoteUser(long id)
         {
             var promotedUser = await _userService.PromoteUser(new PromoteUserCommand{Id = id});
@@ -75,13 +83,19 @@ namespace KitchenRP.Web.Controllers
         }
         
         [HttpPut]
-        [Route("/{id}/demote")]
+        [Route("{id}/demote")]
         public async Task<IActionResult> DemoteUser(long id)
         {
             var demotedUser = await _userService.DemoteUser(new DemoteUserCommand{Id = id});
             return NoContent();
         }
         
-        
+        [HttpDelete]
+        [Route("/{id}")]
+        public async Task<IActionResult> RemoveUser(long id)
+        {
+            await _userService.Remove(id);
+            return NoContent();
+        }
     }
 }

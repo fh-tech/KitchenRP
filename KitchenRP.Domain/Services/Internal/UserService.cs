@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -34,10 +35,12 @@ namespace KitchenRP.Domain.Services.Internal
             return _mapper.Map<User, DomainUser>(u);
         }
 
-        public async  Task<DomainUser?> UserByName(string name)
+        public async  Task<List<DomainUser>> UserByName(string name)
         {
-            var u = await _users.FindBySub(name);
-            return _mapper.Map<User, DomainUser>(u);
+            var u = string.IsNullOrWhiteSpace(name) ? 
+                (IEnumerable<User>) await _users.GetAll() :
+                new []{await _users.FindBySub(name)};
+            return u.Select(_mapper.Map<User, DomainUser>).ToList();
         }
 
         public async Task<IEnumerable<Claim>> GetClaimsForUser(string sub)
@@ -46,6 +49,11 @@ namespace KitchenRP.Domain.Services.Internal
             return GenerateClaims(user);
         }
 
+        public async Task<List<DomainUser>> All()
+        {
+            var users = await _users.GetAll();
+            return users.Select(_mapper.Map<User, DomainUser>).ToList();
+        }
 
         private static IEnumerable<Claim> GenerateClaims(User user)
         {
@@ -91,6 +99,10 @@ namespace KitchenRP.Domain.Services.Internal
             user.Role = modRole;
             var demoted = await _users.UpdateUser(user);
             return _mapper.Map<DomainUser>(demoted);
+        }
+        
+        public async Task Remove(long userId) {
+            var _ = await _users.RemoveUser(userId);
         }
     }
 }
