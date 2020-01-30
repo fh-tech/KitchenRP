@@ -46,6 +46,13 @@ export class ResourceManagementComponent implements OnInit {
         modalRef.componentInstance.refresh = () => this.refresh();
     }
 
+    openModalAdd() {
+        const modalRef = this.modalService.open(ModalResourceComponent, { windowClass : "modal-size-lg"});
+        modalRef.componentInstance.Data = {id: "-", displayName: "", metaData: {}, description: ""};
+        modalRef.componentInstance.Add = true;
+        modalRef.componentInstance.refresh = () => this.refresh();
+    }
+
     search(text: string, pipe: PipeTransform): Resource[] {
         return this.data.filter(resource => {
             const term = text.toLowerCase();

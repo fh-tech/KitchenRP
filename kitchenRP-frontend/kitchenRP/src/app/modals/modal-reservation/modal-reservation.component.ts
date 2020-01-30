@@ -9,8 +9,9 @@ import {ReservationService} from "../../services/reservation/reservation.service
 })
 export class ModalReservationComponent implements OnInit {
 
-    @Input() Add: boolean;
-    reservationId: number;
+
+    @Input() 
+    Add: boolean;
 
     dateField;
     dateString: string;
@@ -63,5 +64,13 @@ export class ModalReservationComponent implements OnInit {
 
     ngOnInit() {
     }
+
+  save() {
+    if (this.Add === undefined || !this.Add) {
+
+    } else {
+
+    }
+  }
 
 }

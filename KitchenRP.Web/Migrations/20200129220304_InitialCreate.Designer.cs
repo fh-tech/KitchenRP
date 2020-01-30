@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KitchenRP.Web.Migrations
 {
     [DbContext(typeof(KitchenRpContext))]
-    [Migration("20191128155746_DefaultStatusValues")]
-    partial class DefaultStatusValues
+    [Migration("20200129220304_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,7 @@ namespace KitchenRP.Web.Migrations
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.Reservation", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
                         .HasColumnType("bigint")
@@ -147,6 +147,10 @@ namespace KitchenRP.Web.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnName("display_name")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnName("is_active")
+                        .HasColumnType("boolean");
 
                     b.Property<JsonDocument>("MetaData")
                         .HasColumnName("meta_data")
@@ -249,7 +253,7 @@ namespace KitchenRP.Web.Migrations
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.StatusChange", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
                         .HasColumnType("bigint")
@@ -294,7 +298,7 @@ namespace KitchenRP.Web.Migrations
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
                         .HasColumnType("bigint")
@@ -307,6 +311,10 @@ namespace KitchenRP.Web.Migrations
                     b.Property<string>("Email")
                         .HasColumnName("email")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnName("is_active")
+                        .HasColumnType("boolean");
 
                     b.Property<long?>("RoleId")
                         .HasColumnName("role_id")
@@ -340,6 +348,23 @@ namespace KitchenRP.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("user_roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            RoleName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            RoleName = "moderator"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            RoleName = "user"
+                        });
                 });
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.Reservation", b =>
@@ -392,7 +417,8 @@ namespace KitchenRP.Web.Migrations
 
                     b.HasOne("KitchenRP.DataAccess.Models.Reservation", "Reservation")
                         .WithMany("StatusChanges")
-                        .HasForeignKey("ReservationId");
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("KitchenRP.DataAccess.Models.User", b =>
